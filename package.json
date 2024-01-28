@@ -2,9 +2,9 @@
     "name": "nest-gpt",
     "version": "0.0.1",
     "description": "",
-    "author": "",
+    "author": "Cartago",
     "private": true,
-    "license": "UNLICENSED",
+    "license": "MIT",
     "scripts": {
         "build": "nest build",
         "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
@@ -17,9 +17,11 @@
         "test:watch": "jest --watch",
         "test:cov": "jest --coverage",
         "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
-        "test:e2e": "jest --config ./test/jest-e2e.json"
+        "test:e2e": "jest --config ./test/jest-e2e.json",
+        "keyer": "keyer -v"
     },
     "dependencies": {
+        "@cartago-git/keyer": "^1.0.9",
         "@nestjs/common": "^10.0.0",
         "@nestjs/core": "^10.0.0",
         "@nestjs/mapped-types": "*",
@@ -30,7 +32,6 @@
         "rxjs": "^7.8.1"
     },
     "devDependencies": {
-        "@cartago-git/keyer": "^1.0.1",
         "@nestjs/cli": "^10.0.0",
         "@nestjs/schematics": "^10.0.0",
         "@nestjs/testing": "^10.0.0",
@@ -51,6 +52,7 @@
         "ts-loader": "^9.4.3",
         "ts-node": "^10.9.1",
         "tsconfig-paths": "^4.2.0",
+        "tsx": "^4.7.0",
         "typescript": "^5.1.3"
     },
     "jest": {
