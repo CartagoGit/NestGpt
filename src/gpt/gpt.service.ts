@@ -9,6 +9,6 @@ export class GptService {
     constructor(private _constantsSvc: ConstantsService) {}
     private _openAi = new OpenAI({ apiKey: this._constantsSvc.openAiKey });
     async postOrthographyCheck({ prompt }: OrthographyDto) {
-        return await postOrthographyCheckUseCase({ prompt });
+        return await postOrthographyCheckUseCase(this._openAi, { prompt });
     }
 }
