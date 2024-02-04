@@ -49,6 +49,7 @@ export const postOrthographyCheckUseCase = async (
         // response_format: {
         //     type: 'json_object'
         // }
+        
     });
     console.log(completion);
     console.log(completion.choices[0]);
