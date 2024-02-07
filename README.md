@@ -2,7 +2,7 @@
 
 1. Clonar el repositorio
 2. Instalar dependencias `npm i`
-3. Crear archivo .env basado en el .env.template
+3. Crear archivo .env basado en el .env.template con la clave de keyer
 4. Ejecutar el comando `npm run start:dev`
 
 
