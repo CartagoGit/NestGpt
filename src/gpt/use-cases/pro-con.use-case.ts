@@ -2,13 +2,14 @@ import OpenAI from 'openai';
 
 import { IApi } from 'src/shared/interfaces/api.interface';
 import { ProConDtoDicusser } from '../dtos/pro-com.dto';
+import { ChatCompletionMessage } from 'openai/resources';
 
 export const postProConDicusserUseCase = async (
     openAi: OpenAI,
     options: ProConDtoDicusser,
-): IApi<string> => {
+): IApi<ChatCompletionMessage> => {
     const { prompt, maxTokens, model, n, temperature } = options;
-    console.log({options});
+    console.log({ options });
     const completion = await openAi.chat.completions.create({
         messages: [
             {
@@ -27,8 +28,6 @@ export const postProConDicusserUseCase = async (
         temperature,
         n,
     });
-    const {
-        message: { content },
-    } = completion.choices[0];
-    return { data: content };
+    const { message } = completion.choices[0];
+    return { data: message };
 };
