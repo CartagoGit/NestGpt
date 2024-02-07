@@ -1,12 +1,14 @@
 import OpenAI from 'openai';
 
 import { IApi, IOptions } from 'src/shared/interfaces/api.interface';
+import { GptDto } from '../dtos/gpt.dto';
 
 export const postProConDiscusserUseCase = async (
     openAi: OpenAI,
-    options: IOptions,
+    options: GptDto,
 ): IApi<string> => {
-    const { prompt, maxTokens } = options;
+    const { prompt, maxTokens, model, n, temperature } = options;
+    console.log(options);
     const completion = await openAi.chat.completions.create({
         messages: [
             {
@@ -20,10 +22,10 @@ export const postProConDiscusserUseCase = async (
                 content: prompt,
             },
         ],
-        model: 'gpt-4',
-        temperature: 0,
-        max_tokens: maxTokens ?? 150,
-        n: 1,
+        model,
+        max_tokens: maxTokens,
+        temperature,
+        n,
     });
     const {
         message: { content },

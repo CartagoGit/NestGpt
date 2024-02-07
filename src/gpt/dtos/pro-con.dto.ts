@@ -1,10 +1,3 @@
-import { IsInt, IsOptional, IsString } from 'class-validator';
+import { GptDto } from './gpt.dto';
 
-export class ProConDicusserDto {
-    @IsString()
-    readonly prompt: string;
-
-    @IsInt()
-    @IsOptional()
-    readonly maxTokens?: number;
-}
+export class ProConDicusserDto extends GptDto {}
