@@ -1,2 +1,3 @@
 export * from './orthography.use-case';
-export * from './pro-con.use-case';
+export * from './pro-con-dicusser.use-case';
+export * from './pro-con-stream.use-case';

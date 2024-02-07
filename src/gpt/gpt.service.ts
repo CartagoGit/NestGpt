@@ -5,6 +5,7 @@ import { ConstantsService } from 'src/shared/services/contants.service';
 import {
     postOrthographyCheckUseCase,
     postProConDicusserUseCase,
+    postProConStreamUseCase,
 } from './use-cases/index.use-cases';
 import { GptDto } from './dtos/gpt.dto';
 import { ProConDtoDicusser } from './dtos/index.dtos';
@@ -24,5 +25,9 @@ export class GptService {
 
     public async postProConDicusser(dto: ProConDtoDicusser) {
         return await postProConDicusserUseCase(this._openAi, dto);
+    }
+
+    public async postProConStream(dto: ProConDtoDicusser) {
+        return await postProConStreamUseCase(this._openAi, dto);
     }
 }
