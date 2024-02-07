@@ -1,14 +1,15 @@
 import OpenAI from 'openai';
-
-interface IOptions {
-    prompt: string;
-}
+import {
+    IApi,
+    IOptions,
+    IOrthographyCheckResponse,
+} from 'src/shared/interfaces/api.interface';
 
 export const postOrthographyCheckUseCase = async (
     openAi: OpenAI,
     options: IOptions,
-) => {
-    const { prompt } = options;
+): IApi<IOrthographyCheckResponse> => {
+    const { prompt, maxTokens } = options;
     const completion = await openAi.chat.completions.create({
         messages: [
             {
@@ -43,13 +44,12 @@ export const postOrthographyCheckUseCase = async (
         ],
         model: 'gpt-4',
         temperature: 0,
-        max_tokens: 150,
+        max_tokens: maxTokens ?? 150,
         n: 1,
         // NOTE - Not type json for every kind models
         // response_format: {
         //     type: 'json_object'
         // }
-
     });
     const {
         message: { content },
