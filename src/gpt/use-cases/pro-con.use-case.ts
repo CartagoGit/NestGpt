@@ -1,13 +1,14 @@
 import OpenAI from 'openai';
 
 import { IApi } from 'src/shared/interfaces/api.interface';
-import { GptDto } from '../dtos/gpt.dto';
+import { ProConDtoDicusser } from '../dtos/pro-com.dto';
 
-export const postProConDiscusserUseCase = async (
+export const postProConDicusserUseCase = async (
     openAi: OpenAI,
-    options: GptDto,
+    options: ProConDtoDicusser,
 ): IApi<string> => {
     const { prompt, maxTokens, model, n, temperature } = options;
+    console.log({options});
     const completion = await openAi.chat.completions.create({
         messages: [
             {

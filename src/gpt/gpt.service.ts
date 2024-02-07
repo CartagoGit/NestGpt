@@ -4,9 +4,10 @@ import { ConstantsService } from 'src/shared/services/contants.service';
 
 import {
     postOrthographyCheckUseCase,
-    postProConDiscusserUseCase,
+    postProConDicusserUseCase,
 } from './use-cases/index.use-cases';
 import { GptDto } from './dtos/gpt.dto';
+import { ProConDtoDicusser } from './dtos/index.dtos';
 
 @Injectable()
 export class GptService {
@@ -21,7 +22,7 @@ export class GptService {
         return await postOrthographyCheckUseCase(this._openAi, dto);
     }
 
-    public async postProConDiscusser(dto: GptDto) {
-        return await postProConDiscusserUseCase(this._openAi, dto);
+    public async postProConDicusser(dto: ProConDtoDicusser) {
+        return await postProConDicusserUseCase(this._openAi, dto);
     }
 }
