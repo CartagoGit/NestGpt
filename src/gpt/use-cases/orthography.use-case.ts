@@ -1,7 +1,6 @@
 import OpenAI from 'openai';
 import {
     IApi,
-    IOptions,
     IOrthographyCheckResponse,
 } from 'src/shared/interfaces/api.interface';
 import { GptDto } from '../dtos/gpt.dto';
