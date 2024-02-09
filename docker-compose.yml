@@ -1,0 +1,11 @@
+version: "3.8"
+services:
+  app:
+    container_name: {IMAGE}-container
+    ports:
+      - "${VITE_PORT}:${VITE_PORT}"
+    build: .
+    image: {IMAGE}
+    volumes:
+      - .:/_projects/%{PROJECT}
+    command: bash -c './scripts/launch.sh && yarn dev'
