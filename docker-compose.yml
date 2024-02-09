@@ -1,11 +1,11 @@
 version: "3.8"
 services:
   app:
-    container_name: {IMAGE}-container
+    container_name: ${DOCKER_IMAGE}-container
     ports:
-      - "${VITE_PORT}:${VITE_PORT}"
+      - "${API_PORT}:${API_PORT}"
     build: .
-    image: {IMAGE}
+    image: ${DOCKER_IMAGE}
     volumes:
-      - .:/_projects/%{PROJECT}
+      - .:/_projects/${PROJECT}
     command: bash -c './scripts/launch.sh && yarn dev'
