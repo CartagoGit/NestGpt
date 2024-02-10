@@ -16,7 +16,7 @@ export const postProConDicusserUseCase = async (
                 content: `Se te dará una pregunta y tu tarea es dar una respuesta con pros y contras,
                 la respuesta debe de ser en formato markdown,
                 los pros y contras deben de estar en una lista.
-                Ten en cuenta que tienes ${maxTokens - 100} como máximo tokens para realizar tu respuesta, incluyendo este prompt, así que no dejes una respuesta a medias. Termina la respuesta antes de que se acaben los tokens.`,
+                Ten en cuenta que tienes ${maxTokens - 100} como máximo tokens para realizar tu respuesta, incluyendo este prompt, así que no dejes una respuesta a medias. Termina la respuesta antes de que se acaben los tokens. Quiero una respuesta escueta, no me des una respuesta larga.`,
             },
             {
                 role: 'user',
