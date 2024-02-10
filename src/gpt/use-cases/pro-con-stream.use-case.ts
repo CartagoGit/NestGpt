@@ -13,7 +13,8 @@ export const postProConStreamUseCase = async (
                 role: 'system',
                 content: `Se te dará una pregunta y tu tarea es dar una respuesta con pros y contras,
                 la respuesta debe de ser en formato markdown,
-                los pros y contras deben de estar en una lista`,
+                los pros y contras deben de estar en una lista.
+                Ten en cuenta que tienes 300 tokens como máximo para responder así que no dejes una respuesta a medias.`,
             },
             {
                 role: 'user',
