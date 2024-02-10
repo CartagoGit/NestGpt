@@ -12,6 +12,6 @@ services:
         image: ${DOCKER_IMAGE}
         volumes:
             - .:/_projects/${PROJECT}
-        command: bash -c './scripts/launch.sh && yarn dev'
+        command: yarn dev
         env_file:
             - ./.env
