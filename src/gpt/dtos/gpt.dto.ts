@@ -39,5 +39,5 @@ export class GptDto {
     @IsString()
     @IsOptional()
     @IsIn(gptModels)
-    readonly model: IGptModel = 'gpt-3.5-turbo';
+    readonly model: IGptModel = 'gpt-4';
 }
