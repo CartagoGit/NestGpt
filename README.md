@@ -22,12 +22,17 @@
 
 -   Docker - Tested with Wsl with Ubuntu distro on Docker Desktop 4.27.1
 
-# Api
+# Recomended usage
 
-> This app needs the NestGpt API running to work, you can find it here:
+> This api is created to use with thease repositories:
 
-- https://github.com/CartagoGit/NestGpt.git
+- https://github.com/CartagoGit/ReactGpt.git
 
 # Others
 
-Envs needed
+- Envs needed
+
+- Keyer library to encrypt and decrypt the data. Optional links:
+    - https://socket.dev/npm/package/@cartago-git/keyer
+    - https://www.npmjs.com/package/@cartago-git/keyer
+    - https://github.com/CartagoGit/Keyer.git
