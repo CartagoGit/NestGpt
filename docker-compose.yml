@@ -1,11 +1,17 @@
-version: "3.8"
+version: '3.8'
 services:
-  app:
-    container_name: ${DOCKER_IMAGE}-container
-    ports:
-      - "${API_PORT}:${API_PORT}"
-    build: .
-    image: ${DOCKER_IMAGE}
-    volumes:
-      - .:/_projects/${PROJECT}
-    command: bash -c './scripts/launch.sh && yarn dev'
+    app:
+        container_name: ${DOCKER_IMAGE}-container
+        ports:
+            - '${API_PORT}:${API_PORT}'
+        build:
+            context: .
+            args:
+                - PROJECT=${PROJECT}
+            dockerfile: Dockerfile
+        image: ${DOCKER_IMAGE}
+        volumes:
+            - .:/_projects/${PROJECT}
+        command: bash -c './scripts/launch.sh && yarn dev'
+        env_file:
+            - ./.env

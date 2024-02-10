@@ -1,11 +1,10 @@
 #!/bin/bash
 
-# Get the environment variables
-source ../.env
+FOLDER="_projects"
 
 # This script is used to launch the NestGpt and ReactGpt projects
-REACT_PROJECT_PATH="../ReactGpt"
-NEST_PROJECT_PATH="../NestGpt"
+REACT_PROJECT_PATH="$FOLDER/ReactGpt"
+NEST_PROJECT_PATH="$FOLDER/NestGpt"
 REACT_REPOSITORY="https://github.com/CartagoGit/ReactGpt.git"
 NEST_REPOSITORY="https://github.com/CartagoGit/NestGpt.git"
 
