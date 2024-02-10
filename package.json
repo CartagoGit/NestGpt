@@ -18,8 +18,10 @@
         "test:cov": "jest --coverage",
         "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
         "test:e2e": "jest --config ./test/jest-e2e.json",
-        "keyer": "keyer -h",
-        "relink": "npm link @cartago-git/keyer && keyer -v"
+        "launch": "npm run dev",
+        "launch:reactgpt": "cd ../ReactGpt && npm dev",
+        "docker:up": "docker-compose up",
+        "docker:reactgpt": "cd ../ReactGpt && docker-compose up"
     },
     "dependencies": {
         "@nestjs/common": "^10.0.0",
