@@ -5,8 +5,8 @@
 
 ### In local mode to development
 
-3. Execute `npm install` in terminal.
-4. Execute `npm run dev` in terminal.
+3. Execute `npm install` or `yarn` in terminal.
+4. Execute `npm run dev` or `yarn dev` in terminal.
 
 ### On Docker mode to development
 
