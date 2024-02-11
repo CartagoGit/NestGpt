@@ -1,8 +1,7 @@
 import { Body, Controller, HttpStatus, Post, Res } from '@nestjs/common';
 import { GptService } from './gpt.service';
-import { GptDto } from './dtos/gpt.dto';
-import { ProConDtoDicusser } from './dtos/pro-com.dto';
 import { Response } from 'express';
+import { GptDto, ProConDicusserDto, TranslateDto } from './dtos/index.dtos';
 
 @Controller('gpt')
 export class GptController {
@@ -14,13 +13,13 @@ export class GptController {
     }
 
     @Post('pro-con/dicusser')
-    postProConDicusser(@Body() body: ProConDtoDicusser) {
+    postProConDicusser(@Body() body: ProConDicusserDto) {
         return this._gptService.postProConDicusser(body);
     }
 
     @Post('pro-con/stream')
     async postProConStream(
-        @Body() body: ProConDtoDicusser,
+        @Body() body: ProConDicusserDto,
         @Res() res: Response,
     ) {
         const stream = await this._gptService.postProConStream(body);
@@ -32,5 +31,10 @@ export class GptController {
             res.write(piece);
         }
         res.end();
+    }
+
+    @Post('translate')
+    postTranslate(@Body() body: TranslateDto) {
+        return this._gptService.postTranslate(body);
     }
 }

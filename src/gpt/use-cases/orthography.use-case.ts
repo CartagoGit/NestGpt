@@ -7,9 +7,9 @@ import { GptDto } from '../dtos/gpt.dto';
 
 export const postOrthographyCheckUseCase = async (
     openAi: OpenAI,
-    options: GptDto,
+    dto: GptDto,
 ): IApi<IOrthographyCheckResponse> => {
-    const { prompt, maxTokens, model, n, temperature } = options;
+    const { prompt, maxTokens, model, n, temperature } = dto;
     const completion = await openAi.chat.completions.create({
         messages: [
             {

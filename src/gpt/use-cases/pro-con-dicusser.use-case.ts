@@ -1,14 +1,14 @@
 import OpenAI from 'openai';
 
-import { IApi } from 'src/shared/interfaces/api.interface';
-import { ProConDtoDicusser } from '../dtos/pro-com.dto';
 import { ChatCompletionMessage } from 'openai/resources';
+import { IApi } from 'src/shared/interfaces/index.interfaces';
+import { ProConDicusserDto } from '../dtos/index.dtos';
 
 export const postProConDicusserUseCase = async (
     openAi: OpenAI,
-    options: ProConDtoDicusser,
+    dto: ProConDicusserDto,
 ): IApi<ChatCompletionMessage> => {
-    const { prompt, maxTokens, model, n, temperature } = options;
+    const { prompt, maxTokens, model, n, temperature } = dto;
     const completion = await openAi.chat.completions.create({
         messages: [
             {

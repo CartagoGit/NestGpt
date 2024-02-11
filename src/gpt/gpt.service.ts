@@ -6,9 +6,9 @@ import {
     postOrthographyCheckUseCase,
     postProConDicusserUseCase,
     postProConStreamUseCase,
+    postTranslateUseCase,
 } from './use-cases/index.use-cases';
-import { GptDto } from './dtos/gpt.dto';
-import { ProConDtoDicusser } from './dtos/index.dtos';
+import { GptDto, ProConDicusserDto, TranslateDto } from './dtos/index.dtos';
 
 @Injectable()
 export class GptService {
@@ -23,11 +23,15 @@ export class GptService {
         return await postOrthographyCheckUseCase(this._openAi, dto);
     }
 
-    public async postProConDicusser(dto: ProConDtoDicusser) {
+    public async postProConDicusser(dto: ProConDicusserDto) {
         return await postProConDicusserUseCase(this._openAi, dto);
     }
 
-    public async postProConStream(dto: ProConDtoDicusser) {
+    public async postProConStream(dto: ProConDicusserDto) {
         return await postProConStreamUseCase(this._openAi, dto);
+    }
+
+    public async postTranslate(dto: TranslateDto) {
+        return await postTranslateUseCase(this._openAi, dto);
     }
 }

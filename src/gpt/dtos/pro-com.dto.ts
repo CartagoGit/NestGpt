@@ -1,5 +1,5 @@
 import { GptDto } from './index.dtos';
 
-export class ProConDtoDicusser extends GptDto {
+export class ProConDicusserDto extends GptDto {
     readonly maxTokens: number = 500;
 }

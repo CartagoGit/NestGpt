@@ -1,6 +1,5 @@
-import { Transform, Type } from 'class-transformer';
+import { Type } from 'class-transformer';
 import {
-    IsDecimal,
     IsIn,
     IsInt,
     IsNumber,
@@ -39,5 +38,5 @@ export class GptDto {
     @IsString()
     @IsOptional()
     @IsIn(gptModels)
-    readonly model: IGptModel = 'gpt-4';
+    readonly model: IGptModel = 'gpt-3.5-turbo';
 }
