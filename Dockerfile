@@ -1,4 +1,4 @@
-FROM node:20-alpine
+FROM oven/bun:1.0.26-alpine
 
 # Get from .env
 ARG PROJECT
@@ -11,8 +11,8 @@ WORKDIR /_projects/${PROJECT}
 
 COPY package*.json ./
 
-RUN yarn global add tsx
+RUN bun install --global tsx
 
-RUN yarn
+RUN bun install
 
 CMD ["tail", "-f", "/dev/null"]

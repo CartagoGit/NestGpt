@@ -18,8 +18,8 @@
         "test:cov": "jest --coverage",
         "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
         "test:e2e": "jest --config ./test/jest-e2e.json",
-        "launch": "yarn dev",
-        "launch:reactgpt": "cd ../ReactGpt && yarn dev",
+        "launch": "bun run dev",
+        "launch:reactgpt": "cd ../ReactGpt && bun run dev",
         "docker:up": "docker-compose up",
         "docker:reactgpt": "cd ../ReactGpt && docker-compose up"
     },

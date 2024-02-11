@@ -12,6 +12,7 @@ services:
         image: ${DOCKER_IMAGE}
         volumes:
             - .:/_projects/${PROJECT}
-        command: yarn dev
-        env_file:
-            - ./.env
+        command: bun run dev
+        init: true
+        ulimits:
+            memlock: -1
