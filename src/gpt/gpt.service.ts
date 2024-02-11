@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, Injectable } from '@nestjs/common';
 import OpenAI from 'openai';
 import { ConstantsService } from 'src/shared/services/contants.service';
 
@@ -18,20 +18,47 @@ export class GptService {
     // ANCHOR : Constructor
     constructor(private _constantsSvc: ConstantsService) {}
 
+    // ANCHOR Helper Methods
+
+    private async _tryCatch<T extends () => any>(
+        fn: T,
+    ): Promise<ReturnType<T>> {
+        try {
+            return await fn();
+        } catch (error) {
+            if (
+                error instanceof SyntaxError &&
+                error.message.includes('JSON Parse error')
+            ) {
+                // Personaliza el mensaje de error y lanza una nueva excepción
+                throw new HttpException(
+                    'Incomplete Json. Text too long maxTokens request.',
+                    400,
+                );
+            }
+            console.error('Error calling OpenAi', error);
+            throw error;
+        }
+    }
+
     // ANCHOR : Methods
     public async postOrthographyCheck(dto: GptDto) {
-        return await postOrthographyCheckUseCase(this._openAi, dto);
+        return this._tryCatch(() =>
+            postOrthographyCheckUseCase(this._openAi, dto),
+        );
     }
 
     public async postProConDicusser(dto: ProConDicusserDto) {
-        return await postProConDicusserUseCase(this._openAi, dto);
+        return this._tryCatch(() =>
+            postProConDicusserUseCase(this._openAi, dto),
+        );
     }
 
     public async postProConStream(dto: ProConDicusserDto) {
-        return await postProConStreamUseCase(this._openAi, dto);
+        return this._tryCatch(() => postProConStreamUseCase(this._openAi, dto));
     }
 
     public async postTranslate(dto: TranslateDto) {
-        return await postTranslateUseCase(this._openAi, dto);
+        return this._tryCatch(() => postTranslateUseCase(this._openAi, dto));
     }
 }
