@@ -34,7 +34,6 @@ export const postTranslateUseCase = async (
         n,
     });
     const { content } = response.choices[0].message;
-    console.log('content', content);
     return {
         data: JSON.parse(content),
     };
