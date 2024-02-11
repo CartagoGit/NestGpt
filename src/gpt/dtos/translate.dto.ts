@@ -7,5 +7,5 @@ export class TranslateDto extends GptDto {
     lang: string = 'English';
 
     maxTokens: number = 500;
-    model: IGptModel = 'gpt-4';
+    // model: IGptModel = 'gpt-4';
 }
