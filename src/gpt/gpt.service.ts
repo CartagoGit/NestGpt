@@ -30,12 +30,19 @@ export class GptService {
                 error instanceof SyntaxError &&
                 error.message.includes('JSON Parse error')
             ) {
-                // Personaliza el mensaje de error y lanza una nueva excepción
                 throw new HttpException(
-                    'Incomplete Json. Text too long maxTokens request.',
+                    {
+                        message: error.message,
+                        kind: 'JsonParseError',
+                        description:
+                            'GptService: Incomplete response from OpenAi. Text too long for maxTokens request.',
+                        cause: 'The response from OpenAi is incomplete. Then the JSON.parse method fails.',
+                        statusCode: 400,
+                    },
                     400,
                 );
             }
+
             console.error('Error calling OpenAi', error);
             throw error;
         }
