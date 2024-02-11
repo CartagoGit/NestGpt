@@ -20,7 +20,7 @@ export const postTranslateUseCase = async (
                 Identifica el idioma del texto que el usuario ha proveido.
                 Traduce el texto proveido por el usuario desde el idioma en el que este el texto, a este otro idioma: '${lang}'.
                 La traducción debe estar en formato Markdown.
-                El h1 debe ser el lenguaje del texto de origen y el lenguaje de texto traducido en el siguiente formato: 'Se va a traducir de {lenguajeOrigen} a {lenguajeResultante}.
+                El h1 debe ser el lenguaje del texto de origen y el lenguaje de texto traducido en el siguiente formato: 'Se va a traducir de {lenguajeOrigen} a {lenguajeResultante}, y debe estar escritoen español.
                 `,
             },
             {
