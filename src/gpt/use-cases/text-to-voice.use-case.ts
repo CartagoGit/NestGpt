@@ -1,5 +1,5 @@
 import path from 'node:path';
-import fs from 'node:fs';
+import fs from 'node:fs/promises';
 import shortUuid from 'short-uuid';
 import OpenAI from 'openai';
 import { TextToVoiceDto } from '../dtos/text-to-voice.dto';
@@ -18,6 +18,7 @@ export const postTextToVoiceUseCase = async (
         folderPath,
         `${new Date().getTime().toString().padStart(14, '0')}_${uuid.new()}.${format}`,
     );
+    await fs.mkdir(folderPath, { recursive: true });
 
     const completion = await openAi.audio.speech.create({
         input: prompt,
