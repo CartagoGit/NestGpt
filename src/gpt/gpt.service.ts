@@ -90,12 +90,11 @@ export class GptService {
         );
     }
 
-    // public async postTextToVoiceStream(dto: TextToVoiceDto) {
-    //     return this._tryCatch(() =>
-    //         postTextToVoiceUseCase(
-    //             { openAi: this._openAi, dto },
-    //             { stream: true },
-    //         ),
-    //     );
-    // }
+    public async getTextToVoice(props: { fileName: string }) {
+        const { fileName } = props;
+        
+        return this._tryCatch(() => {
+            return { data: { filePath: 'asd'} };
+        });
+    }
 }

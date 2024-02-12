@@ -1,5 +1,13 @@
-import fs from 'node:fs';
-import { Body, Controller, HttpStatus, Post, Res } from '@nestjs/common';
+import * as fs from 'node:fs';
+import {
+    Body,
+    Controller,
+    Get,
+    HttpStatus,
+    Param,
+    Post,
+    Res,
+} from '@nestjs/common';
 import { GptService } from './gpt.service';
 import type { Response } from 'express';
 import {
@@ -69,18 +77,33 @@ export class GptController {
         @Res() res: Response,
     ) {
         const { stream: audio, file_path: filePath } = (
-            await this._gptService.postTextToVoice(body)
+            await this._gptService.postTextToVoice(body, { stream: true })
         ).data;
         const writableFile = fs.createWriteStream(filePath);
-
+        console.log('audio', audio);
         res.setHeader('Content-Type', `audio/${body.format}`);
         res.status(HttpStatus.OK);
         for await (const chunk of audio) {
             writableFile.write(chunk);
             res.write(chunk);
-            // console.log('chunk', chunk);
         }
         writableFile.end();
         res.end();
+    }
+
+    @Get('text-to-voice/:file')
+    async getTextToVoice(
+        @Param('file') fileName: string,
+        @Res() res: Response,
+    ) {
+        const { filePath } = (
+            await this._gptService.getTextToVoice({
+                fileName,
+            })
+        ).data;
+        const format = filePath.split('.').at(-1);
+        res.setHeader('Content-Type', `audio/${format}`);
+        res.status(HttpStatus.OK);
+        res.sendFile(filePath);
     }
 }

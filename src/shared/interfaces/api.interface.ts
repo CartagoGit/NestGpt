@@ -4,6 +4,8 @@ import {
     gptAudioModel,
     gptModels,
     gptVoices,
+    kindFormatFile,
+
 } from '../services/contants.service';
 import { Stream } from 'openai/streaming';
 
@@ -22,3 +24,7 @@ export type IGptVoice = (typeof gptVoices)[number];
 export type IGptAudioModel = (typeof gptAudioModel)[number];
 
 export type IGptAudioFormat = (typeof gptAudioFormats)[number];
+
+// Other types
+
+export type IKindFormatFile = typeof kindFormatFile[number];

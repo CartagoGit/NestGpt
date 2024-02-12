@@ -1,19 +1,18 @@
 import * as path from 'node:path';
 import * as fsp from 'node:fs/promises';
-import * as shortUuid from 'short-uuid';
+import shortUuid from 'short-uuid';
 import type { Response } from 'node-fetch';
-import { IGptAudioFormat } from '../interfaces/index.interfaces';
+import {
+    IGptAudioFormat,
+    IKindFormatFile,
+} from '../interfaces/index.interfaces';
 import { getKindFormat } from './index.helpers';
-
-const uuid = shortUuid();
+import { route } from '../services/contants.service';
 
 export const createDataFile = (props: { format: IGptAudioFormat }) => {
     const { format } = props;
-    const fileName = `${new Date().getTime().toString().padStart(14, '0')}_${uuid.new().slice(0, 5)}.${format}`;
-    const folderPath = path.resolve(
-        __dirname,
-        `../../../generated/${getKindFormat(format)}s`,
-    );
+    const fileName = `${new Date().getTime().toString().padStart(14, '0')}_${shortUuid().new().slice(0, 5)}.${format}`;
+    const folderPath = getPath(`generated/${getKindFormat(format)}s`);
     const filePath = path.resolve(folderPath, fileName);
     return { fileName, folderPath, filePath };
 };
@@ -29,4 +28,20 @@ export const createFile = async (props: {
     await fsp.writeFile(filePath, buffer);
 };
 
-export const createFileStream = async (props: {}) => {}
+export const getPath = (endpoint: string) => {
+    return path.join(process.cwd(), endpoint);
+};
+
+export const getPathGenerated = () => {
+    return path.join(process.cwd(), route.generated);
+};
+
+export const getPathKindFile = (kind: IKindFormatFile) => {
+    return path.join(getPathGenerated(), kind);
+};
+
+export const getPathFile = (fileName: string) => {
+    const format = fileName.split('.').at(-1) as IGptAudioFormat;
+    const kind = getKindFormat(format);
+    return path.join(getPathKindFile(kind), fileName);
+};

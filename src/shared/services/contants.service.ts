@@ -36,6 +36,12 @@ export const gptAudioModel = ['tts-1', 'tts-1-hd'] as const;
 
 export const gptAudioFormats = ['mp3', 'opus', 'aac', 'flac'] as const;
 
+export const kindFormatFile = ['audio'] as const;
+
+export const route = {
+    generated: 'generated',
+} as const;
+
 @Injectable()
 export class ConstantsService {
     public openAiKey = process.env.OPENAI_API_KEY;
@@ -43,4 +49,8 @@ export class ConstantsService {
     public gptVoices = gptVoices;
     public gptAudioFormats = gptAudioFormats;
     public gptAudioQuality = gptAudioModel;
+
+    // other
+    public route = route;
+    public kindFormatFile = kindFormatFile;
 }

@@ -14,15 +14,12 @@ export async function postTextToVoiceUseCase(
     const { openAi, dto } = data;
     const { voice, prompt, format, model } = dto;
     const { stream = false } = options || {};
-    const audio = await openAi.audio.speech.create(
-        {
-            input: prompt,
-            model,
-            voice,
-            response_format: format,
-        },
-        { stream },
-    );
+    const audio = await openAi.audio.speech.create({
+        input: prompt,
+        model,
+        voice,
+        response_format: format,
+    });
 
     const { fileName, filePath, folderPath } = createDataFile({
         format,
