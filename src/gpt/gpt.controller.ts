@@ -8,7 +8,6 @@ import {
     TranslateDto,
 } from './dtos/index.dtos';
 
-
 @Controller('gpt')
 export class GptController {
     constructor(private readonly _gptService: GptService) {}
@@ -70,16 +69,11 @@ export class GptController {
     ) {
         const { data: audio } =
             await this._gptService.postTextToVoiceStream(body);
-        // const stream = fs.createWriteStream(filePath);
-        // audio.body?.getReader(stream);
-
         res.setHeader('Content-Type', `audio/${body.format}`);
         res.status(HttpStatus.OK);
         for await (const chunk of audio) {
-            // const piece = chunk.choices?.[0].delta.content ?? '';
-            // const piece = chunk.choices?.[0].delta.content ?? '';
-            // console.info(piece);
             res.write(chunk);
+            // console.log('chunk', chunk);
         }
         res.end();
     }
