@@ -6,13 +6,13 @@ import {
     IGptAudioFormat,
     IKindFormatFile,
 } from '../interfaces/index.interfaces';
-import { getKindFormat } from './index.helpers';
-import { route } from '../services/contants.service';
+
+import { gptAudioFormats, route } from '../services/contants.service';
 
 export const createDataFile = (props: { format: IGptAudioFormat }) => {
     const { format } = props;
     const fileName = `${new Date().getTime().toString().padStart(14, '0')}_${shortUuid().new().slice(0, 5)}.${format}`;
-    const folderPath = getPath(`generated/${getKindFormat(format)}s`);
+    const folderPath = getPathKindFile(getKindFormat(format));
     const filePath = path.resolve(folderPath, fileName);
     return { fileName, folderPath, filePath };
 };
@@ -44,4 +44,14 @@ export const getPathFile = (fileName: string) => {
     const format = fileName.split('.').at(-1) as IGptAudioFormat;
     const kind = getKindFormat(format);
     return path.join(getPathKindFile(kind), fileName);
+};
+
+export const getKindFormat = (format: IGptAudioFormat): IKindFormatFile => {
+    const kind = {
+        audio: gptAudioFormats.includes(format),
+    };
+    for (const key in kind) {
+        if (kind[key]) return key as IKindFormatFile;
+    }
+    throw new Error('Format not found');
 };

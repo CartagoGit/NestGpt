@@ -16,6 +16,7 @@ import {
     TextToVoiceDto,
     TranslateDto,
 } from './dtos/index.dtos';
+import { getPathFile } from 'src/shared/helpers/file.helper';
 
 @Injectable()
 export class GptService {
@@ -92,9 +93,8 @@ export class GptService {
 
     public async getTextToVoice(props: { fileName: string }) {
         const { fileName } = props;
-        
         return this._tryCatch(() => {
-            return { data: { filePath: 'asd'} };
+            return { data: { filePath: getPathFile(fileName) } };
         });
     }
 }

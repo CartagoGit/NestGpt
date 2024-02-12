@@ -4,6 +4,7 @@ import {
     Controller,
     Get,
     HttpStatus,
+    NotFoundException,
     Param,
     Post,
     Res,
@@ -80,7 +81,6 @@ export class GptController {
             await this._gptService.postTextToVoice(body, { stream: true })
         ).data;
         const writableFile = fs.createWriteStream(filePath);
-        console.log('audio', audio);
         res.setHeader('Content-Type', `audio/${body.format}`);
         res.status(HttpStatus.OK);
         for await (const chunk of audio) {
@@ -101,7 +101,10 @@ export class GptController {
                 fileName,
             })
         ).data;
+        if (!fs.existsSync(filePath))
+            throw new NotFoundException('File not found.');
         const format = filePath.split('.').at(-1);
+        console.log('filePath', filePath);
         res.setHeader('Content-Type', `audio/${format}`);
         res.status(HttpStatus.OK);
         res.sendFile(filePath);
