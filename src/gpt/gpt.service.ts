@@ -6,9 +6,15 @@ import {
     postOrthographyCheckUseCase,
     postProConDicusserUseCase,
     postProConStreamUseCase,
+    postTextToVoiceUseCase,
     postTranslateUseCase,
 } from './use-cases/index.use-cases';
-import { GptDto, ProConDicusserDto, TranslateDto } from './dtos/index.dtos';
+import {
+    GptDto,
+    ProConDicusserDto,
+    TextToVoiceDto,
+    TranslateDto,
+} from './dtos/index.dtos';
 
 @Injectable()
 export class GptService {
@@ -67,5 +73,9 @@ export class GptService {
 
     public async postTranslate(dto: TranslateDto) {
         return this._tryCatch(() => postTranslateUseCase(this._openAi, dto));
+    }
+
+    public async postTextToVoice(dto: TextToVoiceDto) {
+        return this._tryCatch(() => postTextToVoiceUseCase(this._openAi, dto));
     }
 }
