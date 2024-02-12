@@ -17,6 +17,7 @@ import {
     TranslateDto,
 } from './dtos/index.dtos';
 import { getPathFile } from 'src/shared/helpers/file.helper';
+import type { Request } from 'express';
 
 @Injectable()
 export class GptService {
@@ -83,11 +84,10 @@ export class GptService {
 
     public async postTextToVoice(
         dto: TextToVoiceDto,
-        options?: { stream?: boolean },
+        options?: { stream?: boolean; req?: Request },
     ) {
-        const { stream = false } = options || {};
         return this._tryCatch(() =>
-            postTextToVoiceUseCase({ openAi: this._openAi, dto }, { stream }),
+            postTextToVoiceUseCase({ openAi: this._openAi, dto }, options),
         );
     }
 

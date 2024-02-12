@@ -15,4 +15,6 @@ RUN bun install --global tsx
 
 RUN bun install
 
+USER root
+
 CMD ["tail", "-f", "/dev/null"]

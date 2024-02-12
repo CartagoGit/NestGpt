@@ -7,10 +7,11 @@ import {
     NotFoundException,
     Param,
     Post,
+    Req,
     Res,
 } from '@nestjs/common';
 import { GptService } from './gpt.service';
-import type { Response } from 'express';
+import type { Response, Request } from 'express';
 import {
     OrthographyDto,
     ProConDicusserDto,
@@ -54,8 +55,11 @@ export class GptController {
     }
 
     @Post('text-to-voice/data')
-    async postTextToVoiceReturnData(@Body() body: TextToVoiceDto) {
-        const { data } = await this._gptService.postTextToVoice(body);
+    async postTextToVoiceReturnData(
+        @Body() body: TextToVoiceDto,
+        @Req() req: Request,
+    ) {
+        const { data } = await this._gptService.postTextToVoice(body, { req });
         return { data };
     }
 
@@ -104,9 +108,14 @@ export class GptController {
         if (!fs.existsSync(filePath))
             throw new NotFoundException('File not found.');
         const format = filePath.split('.').at(-1);
-        console.log('filePath', filePath);
+        // await fs.promises.chmod(filePath, 0o777);
+        // fs.accessSync(filePath, fs.constants.R_OK);
+        console.log(filePath);
         res.setHeader('Content-Type', `audio/${format}`);
         res.status(HttpStatus.OK);
-        res.sendFile(filePath);
+        // res.sendFile(filePath, {root: process.cwd()});
+        res.sendFile('01707778769949_aWmbw.mp3', {
+            root: process.cwd() + '/generated/audio/',
+        });
     }
 }

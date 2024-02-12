@@ -26,6 +26,7 @@ export const createFile = async (props: {
     const buffer = Buffer.from(await file.arrayBuffer());
     await fsp.mkdir(folderPath, { recursive: true });
     await fsp.writeFile(filePath, buffer);
+    await fsp.chmod(filePath,  0o777);
 };
 
 export const getPath = (endpoint: string) => {

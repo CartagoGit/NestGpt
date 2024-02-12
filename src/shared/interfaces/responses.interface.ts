@@ -12,6 +12,6 @@ export interface ITextToVoiceResponse {
     folder_path: string;
     format: IGptAudioFormat;
     file_name: string;
-    getter_url: string;
+    getter_url?: string;
     stream?: NodeJS.ReadableStream;
 }
