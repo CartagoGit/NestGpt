@@ -1,34 +1,50 @@
 import * as path from 'node:path';
-import * as fs from 'node:fs/promises';
+import * as fs from 'node:fs';
 import * as shortUuid from 'short-uuid';
-import type OpenAI from 'openai';
+// import 'openai/shims/node'
+
 import { TextToVoiceDto } from '../dtos/text-to-voice.dto';
-import {
+import type {
     IApi,
     ITextToVoiceResponse,
+    IUseCaseProps,
 } from 'src/shared/interfaces/index.interfaces';
 
 const uuid = shortUuid();
+const fsp = fs.promises;
 
-export const postTextToVoiceUseCase = async (
-    openAi: OpenAI,
-    dto: TextToVoiceDto,
-): IApi<ITextToVoiceResponse> => {
+//* Multiple implementations of the same function signature for different use cases
+export async function postTextToVoiceUseCase(
+    data: IUseCaseProps<TextToVoiceDto>,
+    options?: { stream?: undefined | false | null | never },
+): IApi<ITextToVoiceResponse>;
+export async function postTextToVoiceUseCase(
+    data: IUseCaseProps<TextToVoiceDto>,
+    options: { stream: boolean },
+): IApi<NodeJS.ReadableStream>;
+
+//* Function implementation
+export async function postTextToVoiceUseCase(
+    data: IUseCaseProps<TextToVoiceDto>,
+    options?: { stream?: boolean },
+): IApi<ITextToVoiceResponse | NodeJS.ReadableStream> {
+    const { openAi, dto } = data;
     const { voice, prompt, format, model } = dto;
-
-    const folderPath = path.resolve(__dirname, '../../../generated/audios');
-    const fileName = `${new Date().getTime().toString().padStart(14, '0')}_${uuid.new().slice(0, 5)}.${format}`;
-    const filePath = path.resolve(folderPath, fileName);
-    await fs.mkdir(folderPath, { recursive: true });
-
+    const { stream = false } = options || {};
     const audio = await openAi.audio.speech.create({
         input: prompt,
         model,
         voice,
         response_format: format,
     });
+    if (stream) return { data: audio.body };
+
+    const fileName = `${new Date().getTime().toString().padStart(14, '0')}_${uuid.new().slice(0, 5)}.${format}`;
+    const folderPath = path.resolve(__dirname, '../../../generated/audios');
+    const filePath = path.resolve(folderPath, fileName);
+    await fsp.mkdir(folderPath, { recursive: true });
     const buffer = Buffer.from(await audio.arrayBuffer());
-    await fs.writeFile(filePath, buffer);
+    await fsp.writeFile(filePath, buffer);
     return {
         data: {
             file_name: fileName,
@@ -37,4 +53,4 @@ export const postTextToVoiceUseCase = async (
             format,
         },
     };
-};
+}

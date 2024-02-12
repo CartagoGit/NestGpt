@@ -1,10 +1,10 @@
-import type OpenAI from 'openai';
+import { IUseCaseProps } from 'src/shared/interfaces/use-case.interface';
 import { TranslateDto } from '../dtos/index.dtos';
 
 export const postTranslateUseCase = async (
-    openAi: OpenAI,
-    dto: TranslateDto,
+    data: IUseCaseProps<TranslateDto>,
 ) => {
+    const { openAi, dto } = data;
     const { prompt, model, maxTokens, temperature, n, lang } = dto;
     const response = await openAi.chat.completions.create({
         messages: [

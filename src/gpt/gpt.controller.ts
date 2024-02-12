@@ -1,3 +1,4 @@
+import * as fs from 'fs';
 import { Body, Controller, HttpStatus, Post, Res } from '@nestjs/common';
 import { GptService } from './gpt.service';
 import type { Response } from 'express';
@@ -7,6 +8,7 @@ import {
     TextToVoiceDto,
     TranslateDto,
 } from './dtos/index.dtos';
+import 'openai/shims/node';
 
 @Controller('gpt')
 export class GptController {
@@ -42,9 +44,11 @@ export class GptController {
     postTranslate(@Body() body: TranslateDto) {
         return this._gptService.postTranslate(body);
     }
+
     @Post('text-to-voice/data')
-    postTextToVoiceReturnData(@Body() body: TextToVoiceDto) {
-        return this._gptService.postTextToVoice(body);
+    async postTextToVoiceReturnData(@Body() body: TextToVoiceDto) {
+        const { data } = await this._gptService.postTextToVoice(body);
+        return { data };
     }
 
     @Post('text-to-voice')
@@ -58,5 +62,26 @@ export class GptController {
         res.setHeader('Content-Type', `audio/${body.format}`);
         res.status(HttpStatus.OK);
         res.sendFile(filePath);
+    }
+
+    @Post('text-to-voice/stream')
+    async postTextToVoiceReturnAudioStream(
+        @Body() body: TextToVoiceDto,
+        @Res() res: Response,
+    ) {
+        const {
+            data: { file_path: filePath },
+        } = await this._gptService.postTextToVoice(body, { stream: true });
+        // const stream = fs.createWriteStream(filePath);
+        // audio.body?.getReader(stream);
+
+        // res.setHeader('Content-Type', `audio/${body.format}`);
+        // res.status(HttpStatus.OK);
+        // for await (const chunk of audio.body) {
+        //     const piece = chunk.choices?.[0].delta.content ?? '';
+        //     // console.info(piece);
+        //     res.write(piece);
+        // }
+        // res.end();
     }
 }

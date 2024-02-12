@@ -57,25 +57,35 @@ export class GptService {
     // ANCHOR : Methods
     public async postOrthographyCheck(dto: OrthographyDto) {
         return this._tryCatch(() =>
-            postOrthographyCheckUseCase(this._openAi, dto),
+            postOrthographyCheckUseCase({ openAi: this._openAi, dto }),
         );
     }
 
     public async postProConDicusser(dto: ProConDicusserDto) {
         return this._tryCatch(() =>
-            postProConDicusserUseCase(this._openAi, dto),
+            postProConDicusserUseCase({ openAi: this._openAi, dto }),
         );
     }
 
     public async postProConStream(dto: ProConDicusserDto) {
-        return this._tryCatch(() => postProConStreamUseCase(this._openAi, dto));
+        return this._tryCatch(() =>
+            postProConStreamUseCase({ openAi: this._openAi, dto }),
+        );
     }
 
     public async postTranslate(dto: TranslateDto) {
-        return this._tryCatch(() => postTranslateUseCase(this._openAi, dto));
+        return this._tryCatch(() =>
+            postTranslateUseCase({ openAi: this._openAi, dto }),
+        );
     }
 
-    public async postTextToVoice(dto: TextToVoiceDto) {
-        return this._tryCatch(() => postTextToVoiceUseCase(this._openAi, dto));
+    public async postTextToVoice(
+        dto: TextToVoiceDto,
+        options?: { stream?: boolean },
+    ) {
+        const { stream = false } = options || {};
+        return this._tryCatch(() =>
+            postTextToVoiceUseCase({ openAi: this._openAi, dto }, { stream }),
+        );
     }
 }

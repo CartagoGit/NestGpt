@@ -1,15 +1,14 @@
-import type OpenAI from 'openai';
-
-import {
+import type {
     IApi,
     IOrthographyCheckResponse,
+    IUseCaseProps,
 } from 'src/shared/interfaces/index.interfaces';
 import { OrthographyDto } from '../dtos/orthography.dto';
 
 export const postOrthographyCheckUseCase = async (
-    openAi: OpenAI,
-    dto: OrthographyDto,
+    data: IUseCaseProps<OrthographyDto>,
 ): IApi<IOrthographyCheckResponse> => {
+    const { openAi, dto } = data;
     const { prompt, maxTokens, model, n, temperature } = dto;
     const completion = await openAi.chat.completions.create({
         messages: [
