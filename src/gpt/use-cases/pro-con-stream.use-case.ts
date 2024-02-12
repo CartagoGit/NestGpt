@@ -1,10 +1,12 @@
 import OpenAI from 'openai';
 import { ProConDicusserDto } from '../dtos/index.dtos';
+import { IApiStream } from 'src/shared/interfaces/api.interface';
+import { ChatCompletionChunk } from 'openai/resources';
 
 export const postProConStreamUseCase = async (
     openAi: OpenAI,
     dto: ProConDicusserDto,
-) => {
+): IApiStream<ChatCompletionChunk> => {
     const { prompt, maxTokens, model, n, temperature } = dto;
     const completion = await openAi.chat.completions.create({
         messages: [

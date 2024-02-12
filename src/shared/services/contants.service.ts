@@ -23,8 +23,24 @@ export const gptModels = [
     'gpt-3.5-turbo-16k-0613',
 ] as const;
 
+export const gptVoices = [
+    'alloy',
+    'echo',
+    'fable',
+    'onyx',
+    'nova',
+    'shimmer',
+] as const;
+
+export const gptAudioModel = ['tts-1', 'tts-1-hd'] as const;
+
+export const gptAudioFormats = ['mp3', 'opus', 'aac', 'flac'] as const;
+
 @Injectable()
 export class ConstantsService {
     public openAiKey = process.env.OPENAI_API_KEY;
     public gptModels = gptModels;
+    public gptVoices = gptVoices;
+    public gptAudioFormats = gptAudioFormats;
+    public gptAudioQuality = gptAudioModel;
 }
