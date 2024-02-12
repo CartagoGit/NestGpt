@@ -10,7 +10,7 @@ import {
     postTranslateUseCase,
 } from './use-cases/index.use-cases';
 import {
-    GptDto,
+    OrthographyDto,
     ProConDicusserDto,
     TextToVoiceDto,
     TranslateDto,
@@ -55,7 +55,7 @@ export class GptService {
     }
 
     // ANCHOR : Methods
-    public async postOrthographyCheck(dto: GptDto) {
+    public async postOrthographyCheck(dto: OrthographyDto) {
         return this._tryCatch(() =>
             postOrthographyCheckUseCase(this._openAi, dto),
         );

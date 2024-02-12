@@ -1,5 +1,5 @@
 import { IsString } from 'class-validator';
-import { GptDto } from './gpt.dto';
+import { GptDto } from './bases/gpt.dto';
 import { IGptModel } from 'src/shared/interfaces/api.interface';
 
 export class TranslateDto extends GptDto {

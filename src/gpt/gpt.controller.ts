@@ -1,14 +1,19 @@
 import { Body, Controller, HttpStatus, Post, Res } from '@nestjs/common';
 import { GptService } from './gpt.service';
 import { Response } from 'express';
-import { GptDto, ProConDicusserDto, TextToVoiceDto, TranslateDto } from './dtos/index.dtos';
+import {
+    OrthographyDto,
+    ProConDicusserDto,
+    TextToVoiceDto,
+    TranslateDto,
+} from './dtos/index.dtos';
 
 @Controller('gpt')
 export class GptController {
     constructor(private readonly _gptService: GptService) {}
 
     @Post('orthography/check')
-    postOrthographyCheck(@Body() body: GptDto) {
+    postOrthographyCheck(@Body() body: OrthographyDto) {
         return this._gptService.postOrthographyCheck(body);
     }
 
@@ -38,7 +43,7 @@ export class GptController {
         return this._gptService.postTranslate(body);
     }
     @Post('text-to-voice')
-    postTextToVoice(@Body() body: TextToVoiceDto){
+    postTextToVoice(@Body() body: TextToVoiceDto) {
         return this._gptService.postTextToVoice(body);
     }
 }
