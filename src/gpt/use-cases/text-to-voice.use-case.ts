@@ -24,12 +24,18 @@ export async function postTextToVoiceUseCase(
     const { fileName, filePath, folderPath } = createDataFile({
         format,
     });
+
+    const protocol = window.location.protocol;
+    const host = window.location.host;
+    const getterUrl = `${protocol}//${host}/gpt/text-to-voice/${fileName}`;
+    
     const fileData = {
         file_name: fileName,
         file_path: filePath,
         folder_path: folderPath,
         format,
-    };
+        getter_url: `/gpt/text-to-voice/${fileName}`,
+    } as ITextToVoiceResponse;
     if (stream) {
         return { data: { ...fileData, stream: audio.body } };
     } else {
