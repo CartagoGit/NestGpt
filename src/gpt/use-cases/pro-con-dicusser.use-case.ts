@@ -1,4 +1,4 @@
-import OpenAI from 'openai';
+import type OpenAI from 'openai';
 
 import { ChatCompletionMessage } from 'openai/resources';
 import { IApi } from 'src/shared/interfaces/index.interfaces';

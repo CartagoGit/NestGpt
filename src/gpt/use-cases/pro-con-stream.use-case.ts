@@ -1,4 +1,4 @@
-import OpenAI from 'openai';
+import type OpenAI from 'openai';
 import { ProConDicusserDto } from '../dtos/index.dtos';
 import { IApiStream } from 'src/shared/interfaces/api.interface';
 import { ChatCompletionChunk } from 'openai/resources';

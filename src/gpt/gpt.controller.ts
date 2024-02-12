@@ -1,6 +1,6 @@
 import { Body, Controller, HttpStatus, Post, Res } from '@nestjs/common';
 import { GptService } from './gpt.service';
-import { Response } from 'express';
+import type { Response } from 'express';
 import {
     OrthographyDto,
     ProConDicusserDto,

@@ -18,7 +18,7 @@ export class GptDtoAudio {
     @IsString()
     @IsOptional()
     @IsIn(gptVoices)
-    public voice: IGptVoice = 'nova';
+    public voice: IGptVoice = 'onyx';
 
     @IsString()
     @IsOptional()

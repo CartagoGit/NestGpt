@@ -1,4 +1,4 @@
-import OpenAI from 'openai';
+import type OpenAI from 'openai';
 import { TranslateDto } from '../dtos/index.dtos';
 
 export const postTranslateUseCase = async (
