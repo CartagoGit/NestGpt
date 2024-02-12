@@ -17,7 +17,7 @@ export const postTextToVoiceUseCase = async (
     const { voice, prompt, format, model } = dto;
 
     const folderPath = path.resolve(__dirname, '../../../generated/audios');
-    const fileName = `${new Date().getTime().toString().padStart(14, '0')}_${uuid.new().slice(0,5)}.${format}`;
+    const fileName = `${new Date().getTime().toString().padStart(14, '0')}_${uuid.new().slice(0, 5)}.${format}`;
     const filePath = path.resolve(folderPath, fileName);
     await fs.mkdir(folderPath, { recursive: true });
 

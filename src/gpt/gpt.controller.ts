@@ -42,8 +42,21 @@ export class GptController {
     postTranslate(@Body() body: TranslateDto) {
         return this._gptService.postTranslate(body);
     }
-    @Post('text-to-voice')
-    postTextToVoice(@Body() body: TextToVoiceDto) {
+    @Post('text-to-voice/data')
+    postTextToVoiceReturnData(@Body() body: TextToVoiceDto) {
         return this._gptService.postTextToVoice(body);
+    }
+
+    @Post('text-to-voice')
+    async postTextToVoiceReturnAudio(
+        @Body() body: TextToVoiceDto,
+        @Res() res: Response,
+    ) {
+        const { file_path: filePath } = (
+            await this._gptService.postTextToVoice(body)
+        ).data;
+        res.setHeader('Content-Type', `audio/${body.format}`);
+        res.status(HttpStatus.OK);
+        res.sendFile(filePath);
     }
 }
