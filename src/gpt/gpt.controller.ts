@@ -1,4 +1,3 @@
-import * as fs from 'fs';
 import { Body, Controller, HttpStatus, Post, Res } from '@nestjs/common';
 import { GptService } from './gpt.service';
 import type { Response } from 'express';
@@ -8,7 +7,7 @@ import {
     TextToVoiceDto,
     TranslateDto,
 } from './dtos/index.dtos';
-import 'openai/shims/node';
+
 
 @Controller('gpt')
 export class GptController {
@@ -69,17 +68,19 @@ export class GptController {
         @Body() body: TextToVoiceDto,
         @Res() res: Response,
     ) {
-        const stream = await this._gptService.postTextToVoiceStream(body);
+        const { data: audio } =
+            await this._gptService.postTextToVoiceStream(body);
         // const stream = fs.createWriteStream(filePath);
         // audio.body?.getReader(stream);
 
-        // res.setHeader('Content-Type', `audio/${body.format}`);
-        // res.status(HttpStatus.OK);
-        // for await (const chunk of audio.body) {
-        //     const piece = chunk.choices?.[0].delta.content ?? '';
-        //     // console.info(piece);
-        //     res.write(piece);
-        // }
-        // res.end();
+        res.setHeader('Content-Type', `audio/${body.format}`);
+        res.status(HttpStatus.OK);
+        for await (const chunk of audio) {
+            // const piece = chunk.choices?.[0].delta.content ?? '';
+            // const piece = chunk.choices?.[0].delta.content ?? '';
+            // console.info(piece);
+            res.write(chunk);
+        }
+        res.end();
     }
 }

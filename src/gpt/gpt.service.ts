@@ -1,4 +1,5 @@
 import { HttpException, Injectable } from '@nestjs/common';
+import 'openai/shims/node';
 import OpenAI from 'openai';
 import { ConstantsService } from 'src/shared/services/contants.service';
 

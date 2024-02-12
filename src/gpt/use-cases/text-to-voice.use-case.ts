@@ -1,7 +1,7 @@
 import * as path from 'node:path';
 import * as fs from 'node:fs';
 import * as shortUuid from 'short-uuid';
-// import 'openai/shims/node'
+
 
 import { TextToVoiceDto } from '../dtos/text-to-voice.dto';
 import type {
