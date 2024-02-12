@@ -67,8 +67,8 @@ export class GptController {
         @Body() body: TextToVoiceDto,
         @Res() res: Response,
     ) {
-        const { data: audio } =
-            await this._gptService.postTextToVoiceStream(body);
+        const audio = (await this._gptService.postTextToVoice(body)).data
+            .stream!;
         res.setHeader('Content-Type', `audio/${body.format}`);
         res.status(HttpStatus.OK);
         for await (const chunk of audio) {
