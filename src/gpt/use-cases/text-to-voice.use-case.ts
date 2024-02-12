@@ -13,14 +13,14 @@ import type {
 const uuid = shortUuid();
 const fsp = fs.promises;
 
-//* Multiple implementations of the same function signature for different use cases
+// //* Multiple implementations of the same function signature for different use cases
 export async function postTextToVoiceUseCase(
     data: IUseCaseProps<TextToVoiceDto>,
     options?: { stream?: undefined | false | null | never },
 ): IApi<ITextToVoiceResponse>;
 export async function postTextToVoiceUseCase(
     data: IUseCaseProps<TextToVoiceDto>,
-    options: { stream: boolean },
+    options: { stream: true },
 ): IApi<NodeJS.ReadableStream>;
 
 //* Function implementation

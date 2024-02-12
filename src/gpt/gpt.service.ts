@@ -79,13 +79,18 @@ export class GptService {
         );
     }
 
-    public async postTextToVoice(
-        dto: TextToVoiceDto,
-        options?: { stream?: boolean },
-    ) {
-        const { stream = false } = options || {};
+    public async postTextToVoice(dto: TextToVoiceDto) {
         return this._tryCatch(() =>
-            postTextToVoiceUseCase({ openAi: this._openAi, dto }, { stream }),
+            postTextToVoiceUseCase({ openAi: this._openAi, dto }),
+        );
+    }
+
+    public async postTextToVoiceStream(dto: TextToVoiceDto) {
+        return this._tryCatch(() =>
+            postTextToVoiceUseCase(
+                { openAi: this._openAi, dto },
+                { stream: true },
+            ),
         );
     }
 }
