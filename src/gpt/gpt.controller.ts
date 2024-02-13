@@ -111,11 +111,25 @@ export class GptController {
         // await fs.promises.chmod(filePath, 0o777);
         // fs.accessSync(filePath, fs.constants.R_OK);
         console.log(filePath);
-        res.setHeader('Content-Type', `audio/${format}`);
+        // res.setHeader('Content-Type', `audio/${format}`);
+        res.setHeader('Content-Type', `audio/mpeg`);
+        res.setHeader('Content-Disposition', `inline; filename=${fileName}`);
         res.status(HttpStatus.OK);
+        // res.setHeader(
+        //     'Content-Disposition',
+        //     `attachment; filename=${fileName}`,
+        // );
+        // const audio = fs.createReadStream(filePath);
+        // audio.pipe(res);
+        // res.setHeader(
+        //     'Accept',
+        //     `text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7`,
+        // );
+        res.sendFile(filePath);
         // res.sendFile(filePath, {root: process.cwd()});
-        res.sendFile('01707778769949_aWmbw.mp3', {
-            root: process.cwd() + '/generated/audio/',
-        });
+        // res.download(filePath, fileName);
+        // ('01707778769949_aWmbw.mp3', {
+        //     root: process.cwd() + '/generated/audio/',
+        // });
     }
 }

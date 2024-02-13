@@ -5,7 +5,7 @@ ARG PROJECT
 RUN echo "Project: ${PROJECT}"
 
 # Install bash
-RUN apk add --no-cache bash
+RUN apk update && apk add curl && apk add --no-cache bash
 
 WORKDIR /_projects/${PROJECT}
 
@@ -14,7 +14,5 @@ COPY package*.json ./
 RUN bun install --global tsx
 
 RUN bun install
-
-USER root
 
 CMD ["tail", "-f", "/dev/null"]
