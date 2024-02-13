@@ -1,4 +1,4 @@
-import { SharedModule } from './shared/services/shared.module';
+import { SharedModule } from './shared/shared.module';
 import { PingModule } from './_ping/ping.module';
 import { Module } from '@nestjs/common';
 import { GptModule } from './gpt/gpt.module';

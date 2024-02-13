@@ -1,4 +1,5 @@
-import { ChatCompletionChunk } from 'openai/resources';
+import type { ChatCompletionChunk } from 'openai/resources';
+import type { Stream } from 'openai/streaming';
 import {
     gptAudioFormats,
     gptAudioModel,
@@ -7,7 +8,6 @@ import {
     kindFormatFile,
 
 } from '../services/contants.service';
-import { Stream } from 'openai/streaming';
 
 // Kind Api Responses
 export type IApi<T> = Promise<{ data: T }>;
