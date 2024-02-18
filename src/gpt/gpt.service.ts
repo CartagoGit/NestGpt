@@ -84,7 +84,7 @@ export class GptService {
 
     public async postTextToVoice(
         dto: TextToVoiceDto,
-        options?: { stream?: boolean; req?: Request },
+        options: { stream?: boolean; req: Request },
     ) {
         return this._tryCatch(() =>
             postTextToVoiceUseCase({ openAi: this._openAi, dto }, options),

@@ -67,9 +67,10 @@ export class GptController {
     async postTextToVoiceReturnAudio(
         @Body() body: TextToVoiceDto,
         @Res() res: Response,
+        @Req() req: Request,
     ) {
         const { file_path: filePath } = (
-            await this._gptService.postTextToVoice(body)
+            await this._gptService.postTextToVoice(body, { req })
         ).data;
         res.setHeader('Content-Type', `audio/${body.format}`);
         res.status(HttpStatus.OK);
@@ -80,9 +81,10 @@ export class GptController {
     async postTextToVoiceReturnAudioStream(
         @Body() body: TextToVoiceDto,
         @Res() res: Response,
+        @Req() req: Request,
     ) {
         const { stream: audio, file_path: filePath } = (
-            await this._gptService.postTextToVoice(body, { stream: true })
+            await this._gptService.postTextToVoice(body, { stream: true, req })
         ).data;
         const writableFile = fs.createWriteStream(filePath);
         res.setHeader('Content-Type', `audio/${body.format}`);

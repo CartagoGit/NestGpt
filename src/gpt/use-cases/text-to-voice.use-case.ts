@@ -14,7 +14,7 @@ import type { Request } from 'express';
 //* Function implementation
 export async function postTextToVoiceUseCase(
     data: IUseCaseProps<TextToVoiceDto>,
-    options?: { stream?: boolean; req?: Request },
+    options?: { stream?: boolean; req: Request },
 ): IApi<ITextToVoiceResponse> {
     const { openAi, dto } = data;
     const { voice, prompt, format, model } = dto;

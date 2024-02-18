@@ -8,6 +8,8 @@
 3. Execute `npm install` or `yarn` in terminal.
 4. Execute `npm run dev` or `yarn dev` in terminal.
 
+> You can use bun.js to run the app server too.
+
 ### On Docker mode to development
 
 3. Execute `docker compose up` in terminal.
