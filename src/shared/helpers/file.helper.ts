@@ -6,34 +6,52 @@ import {
     IGptAudioFormat,
     IKindFormatFile,
 } from '../interfaces/index.interfaces';
-import { gptAudioFormats, route } from '../services/contants.service';
+import {
+    gptAudioFormats,
+    kindFormat,
+    route,
+} from '../services/contants.service';
 
 export const createFileName = (props: {
     extension: string;
     initFileName?: string;
 }) => {
     const { extension, initFileName = undefined } = props;
-    const fileName = `${initFileName ? initFileName + '_' : ''}${new Date().getTime().toString().padStart(14, '0')}_${shortUuid().new().slice(0, 5)}.${extension}`;
+    const fileName = `${initFileName ? initFileName.slice(0, 6) + '_' : ''}${new Date().getTime().toString().padStart(14, '0')}_${shortUuid().new().slice(0, 5)}.${extension}`;
     return fileName;
 };
 
-export const createFileData = (props: { format: IGptAudioFormat }) => {
-    const { format } = props;
+export const createFileData = (props: {
+    format: IGptAudioFormat;
+    isUpload?: boolean;
+    initFileName?: string;
+}) => {
+    const { format, isUpload = false, initFileName = undefined } = props;
     const fileName = createFileName({
         extension: format,
+        initFileName,
     });
-    const folderPath = getPathKindFile(getKindFormat(format));
+    const folderPath = getPathKindFile(getKindFormat(format), { isUpload });
     const filePath = path.resolve(folderPath, fileName);
     return { fileName, folderPath, filePath };
 };
 
-export const createFile = async (props: {
+export const createFileFromResponse = async (props: {
     file: Response;
     folderPath: string;
     filePath: string;
 }) => {
     const { file, folderPath, filePath } = props;
     const buffer = Buffer.from(await file.arrayBuffer());
+    await createFile({ buffer, folderPath, filePath });
+};
+
+export const createFile = async (props: {
+    buffer: Buffer;
+    folderPath: string;
+    filePath: string;
+}) => {
+    const { buffer, folderPath, filePath } = props;
     await fsp.mkdir(folderPath, { recursive: true });
     await fsp.writeFile(filePath, buffer);
     await fsp.chmod(filePath, 0o777);
@@ -61,11 +79,8 @@ export const getPathFile = (fileName: string) => {
 };
 
 export const getKindFormat = (format: IGptAudioFormat): IKindFormatFile => {
-    const kind = {
-        audio: gptAudioFormats.includes(format),
-    };
-    for (const key in kind) {
-        if (kind[key]) return key as IKindFormatFile;
+    for (const key in kindFormat) {
+        if (kindFormat[key].includes(format)) return key as IKindFormatFile;
     }
     throw new Error('Format not found');
 };

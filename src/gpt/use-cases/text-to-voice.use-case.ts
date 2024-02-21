@@ -1,6 +1,6 @@
 import {
     createFileData,
-    createFile,
+    createFileFromResponse,
     getUrlFile,
 } from 'src/shared/helpers/index.helpers';
 import { TextToVoiceDto } from '../dtos/text-to-voice.dto';
@@ -43,7 +43,7 @@ export async function postTextToVoiceUseCase(
     if (stream) {
         return { data: { ...fileData, stream: audio.body } };
     } else {
-        await createFile({ file: audio, folderPath, filePath });
+        await createFileFromResponse({ file: audio, folderPath, filePath });
         return { data: fileData };
     }
 }
