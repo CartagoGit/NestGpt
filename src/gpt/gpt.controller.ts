@@ -9,16 +9,22 @@ import {
     Post,
     Req,
     Res,
+    UseInterceptors,
 } from '@nestjs/common';
 import { GptService } from './gpt.service';
 import type { Response, Request } from 'express';
 import {
-    AudioToTextDto,
     OrthographyDto,
     ProConDicusserDto,
     TextToVoiceDto,
     TranslateDto,
 } from './dtos/index.dtos';
+import { FileInterceptor } from '@nestjs/platform-express';
+import { diskStorage } from 'multer';
+import {
+    createFileName,
+    getPathKindFile,
+} from 'src/shared/helpers/index.helpers';
 
 @Controller('gpt')
 export class GptController {
@@ -120,10 +126,24 @@ export class GptController {
         res.end();
     }
 
-    
     @Post('audio-to-text')
-    postAutoToText(@Body() body: AudioToTextDto) {
-        return this._gptService.postAudioToText(body);
+    @UseInterceptors(
+        FileInterceptor('file', {
+            storage: diskStorage({
+                destination: getPathKindFile('audio', { isUpload: true }),
+                filename: (_req, file, cb) => {
+                    const [originalFileName, extension] =
+                        file.originalname.split('.');
+                    const fileName = createFileName({
+                        extension,
+                        initFileName: originalFileName,
+                    });
+                    return cb(null, fileName);
+                },
+            }),
+        }),
+    )
+    async postAutoToText() {
+        return 'done';
     }
-
 }

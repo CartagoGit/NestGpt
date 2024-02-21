@@ -39,7 +39,8 @@ export const gptAudioFormats = ['mp3', 'opus', 'aac', 'flac'] as const;
 export const kindFormatFile = ['audio'] as const;
 
 export const route = {
-    generated: 'generated',
+    generated: '_generated',
+    uploads: '_uploads',
 } as const;
 
 @Injectable()

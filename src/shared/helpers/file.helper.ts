@@ -6,12 +6,22 @@ import {
     IGptAudioFormat,
     IKindFormatFile,
 } from '../interfaces/index.interfaces';
-
 import { gptAudioFormats, route } from '../services/contants.service';
 
-export const createDataFile = (props: { format: IGptAudioFormat }) => {
+export const createFileName = (props: {
+    extension: string;
+    initFileName?: string;
+}) => {
+    const { extension, initFileName = undefined } = props;
+    const fileName = `${initFileName ? initFileName + '_' : ''}${new Date().getTime().toString().padStart(14, '0')}_${shortUuid().new().slice(0, 5)}.${extension}`;
+    return fileName;
+};
+
+export const createFileData = (props: { format: IGptAudioFormat }) => {
     const { format } = props;
-    const fileName = `${new Date().getTime().toString().padStart(14, '0')}_${shortUuid().new().slice(0, 5)}.${format}`;
+    const fileName = createFileName({
+        extension: format,
+    });
     const folderPath = getPathKindFile(getKindFormat(format));
     const filePath = path.resolve(folderPath, fileName);
     return { fileName, folderPath, filePath };
@@ -26,19 +36,22 @@ export const createFile = async (props: {
     const buffer = Buffer.from(await file.arrayBuffer());
     await fsp.mkdir(folderPath, { recursive: true });
     await fsp.writeFile(filePath, buffer);
-    await fsp.chmod(filePath,  0o777);
+    await fsp.chmod(filePath, 0o777);
 };
 
-export const getPath = (endpoint: string) => {
-    return path.join(process.cwd(), endpoint);
-};
+export const getPath = (endpoint: string) => path.join(process.cwd(), endpoint);
 
-export const getPathGenerated = () => {
-    return path.join(process.cwd(), route.generated);
-};
+export const getPathGenerated = () => getPath(route.generated);
 
-export const getPathKindFile = (kind: IKindFormatFile) => {
-    return path.join(getPathGenerated(), kind);
+export const getPathUploads = () => getPath(route.uploads);
+
+export const getPathKindFile = (
+    kind: IKindFormatFile,
+    options?: { isUpload?: boolean },
+) => {
+    const { isUpload = false } = options || {};
+    const pathToJoin = [isUpload ? getPathUploads() : getPathGenerated(), kind];
+    return path.join(...pathToJoin);
 };
 
 export const getPathFile = (fileName: string) => {

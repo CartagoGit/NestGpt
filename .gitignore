@@ -42,5 +42,7 @@ pnpm-lock.yaml
 bun.lockb
 
 # Exlude generated files
-/generated/*
-!/generated/**/.gitkeep
+/_generated/*
+!/_generated/**/.gitkeep
+/_uploads/*
+!/_uploads/**/.gitkeep

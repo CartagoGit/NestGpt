@@ -1,5 +1,5 @@
 import {
-    createDataFile,
+    createFileData,
     createFile,
     getUrlFile,
 } from 'src/shared/helpers/index.helpers';
@@ -26,7 +26,7 @@ export async function postTextToVoiceUseCase(
         response_format: format,
     });
 
-    const { fileName, filePath, folderPath } = createDataFile({
+    const { fileName, filePath, folderPath } = createFileData({
         format,
     });
 
