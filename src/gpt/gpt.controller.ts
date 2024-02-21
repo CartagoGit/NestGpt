@@ -2,13 +2,17 @@ import * as fs from 'node:fs';
 import {
     Body,
     Controller,
+    FileTypeValidator,
     Get,
     HttpStatus,
+    MaxFileSizeValidator,
     NotFoundException,
     Param,
+    ParseFilePipe,
     Post,
     Req,
     Res,
+    UploadedFile,
     UseInterceptors,
 } from '@nestjs/common';
 import { GptService } from './gpt.service';
@@ -128,6 +132,7 @@ export class GptController {
 
     @Post('audio-to-text')
     @UseInterceptors(
+        // TO upload!
         FileInterceptor('file', {
             storage: diskStorage({
                 destination: getPathKindFile('audio', { isUpload: true }),
@@ -143,7 +148,21 @@ export class GptController {
             }),
         }),
     )
-    async postAutoToText() {
+    async postAutoToText(
+        // To validate!
+        @UploadedFile(
+            new ParseFilePipe({
+                validators: [
+                    new MaxFileSizeValidator({
+                        maxSize: 1000 * 1024 * 5,
+                        message: 'File is bigger than 5MB',
+                    }),
+                    new FileTypeValidator({ fileType: 'audio/*' }),
+                ],
+            }),
+        )
+        file: Express.Multer.File,
+    ) {
         return 'done';
     }
 }
