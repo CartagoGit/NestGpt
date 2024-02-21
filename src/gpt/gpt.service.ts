@@ -4,6 +4,7 @@ import OpenAI from 'openai';
 import { ConstantsService } from 'src/shared/services/contants.service';
 
 import {
+    postAudioToTextUseCase,
     postOrthographyCheckUseCase,
     postProConDicusserUseCase,
     postProConStreamUseCase,
@@ -11,6 +12,7 @@ import {
     postTranslateUseCase,
 } from './use-cases/index.use-cases';
 import {
+    AudioToTextDto,
     OrthographyDto,
     ProConDicusserDto,
     TextToVoiceDto,
@@ -96,5 +98,12 @@ export class GptService {
         return this._tryCatch(() => {
             return { data: { filePath: getPathFile(fileName) } };
         });
+    }
+
+    
+    public async postAudioToText(dto: AudioToTextDto) {
+        return this._tryCatch(() =>
+            postAudioToTextUseCase({ openAi: this._openAi, dto }),
+        );
     }
 }

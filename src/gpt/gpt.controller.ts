@@ -13,6 +13,7 @@ import {
 import { GptService } from './gpt.service';
 import type { Response, Request } from 'express';
 import {
+    AudioToTextDto,
     OrthographyDto,
     ProConDicusserDto,
     TextToVoiceDto,
@@ -118,4 +119,11 @@ export class GptController {
         res.write(readedFile);
         res.end();
     }
+
+    
+    @Post('audio-to-text')
+    postAutoToText(@Body() body: AudioToTextDto) {
+        return this._gptService.postAudioToText(body);
+    }
+
 }

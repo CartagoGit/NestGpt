@@ -7,3 +7,4 @@ export * from './orthography.dto';
 export * from './pro-com.dto';
 export * from './translate.dto';
 export * from './text-to-voice.dto';
+export * from './audio-to-text.dto';
