@@ -1,4 +1,4 @@
-FROM oven/bun:1.0.26-alpine
+FROM oven/bun:1.0.28-alpine
 
 # Get from .env
 ARG PROJECT
@@ -12,7 +12,5 @@ WORKDIR /_projects/${PROJECT}
 COPY package*.json ./
 
 RUN bun install --global tsx
-
-RUN bun install
 
 CMD ["tail", "-f", "/dev/null"]

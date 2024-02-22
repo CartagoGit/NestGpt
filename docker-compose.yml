@@ -13,7 +13,7 @@ services:
         image: ${DOCKER_IMAGE}
         volumes:
             - .:/_projects/${PROJECT}
-        command: bun run dev
+        command: ["sh", "-c", "bun i && bun run dev"]
         init: true
         ulimits:
             memlock: -1
