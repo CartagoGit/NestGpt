@@ -12,5 +12,3 @@ WORKDIR /_projects/${PROJECT}
 COPY package*.json ./
 
 RUN bun install --global tsx
-
-CMD ["tail", "-f", "/dev/null"]

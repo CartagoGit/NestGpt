@@ -18,3 +18,4 @@ services:
         init: true
         ulimits:
             memlock: -1
+        tty: true
