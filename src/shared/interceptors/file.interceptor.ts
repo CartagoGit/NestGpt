@@ -65,7 +65,15 @@ export const FileToBodyInterceptor = (
         }
 
         private _getMultipleHandle(props: IIntercept): Observable<any> {
-            return new Observable((observer) => {});
+            const { context } = props;
+            return new Observable((observer) => {
+                const request = context.switchToHttp().getRequest<Request>();
+                return this._multer.array(paramName)(
+                    request,
+                    null,
+                    this._multerRequestHandler({ ...props, observer }),
+                );
+            });
         }
 
         private _multerRequestHandler = (
@@ -74,18 +82,19 @@ export const FileToBodyInterceptor = (
             const { context, next, observer } = props;
             const request = context.switchToHttp().getRequest<Request>();
             return (err: any) => {
+                const errorMessage = `Files were not uploaded with the field name ${paramName}`;
                 if (err) {
-                    return observer.error(new BadRequestException(err.message));
+                    return observer.error(
+                        new BadRequestException(errorMessage),
+                    );
                 }
                 const file = request[paramName];
                 if (!file) {
-                    observer.error(
-                        new BadRequestException(
-                            `Files were not uploaded with the field name ${paramName}`,
-                        ),
+                    return observer.error(
+                        new BadRequestException(errorMessage),
                     );
-                    return;
                 }
+
                 if (cleanParam) delete request[paramName];
                 const body = {
                     ...request.body,
