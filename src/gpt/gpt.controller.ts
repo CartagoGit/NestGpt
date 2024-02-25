@@ -22,8 +22,8 @@ import {
 } from './dtos/index.dtos';
 // Needed to use declarative types
 import { Multer } from 'multer';
-import { UploadedFileKind } from 'src/shared/helpers/index.helpers';
 import { FileInterceptor } from '@nestjs/platform-express';
+import { UploadedFileKind } from 'src/shared/decorators/index.decorators';
 
 @Controller('gpt')
 export class GptController {
@@ -129,12 +129,14 @@ export class GptController {
     @UseInterceptors(FileInterceptor('file'))
     async postAudioToText(
         // File validator
-        @UploadedFileKind({ kind: 'audio', maxMb: 5, hasCreateFile: true })
-        file: Express.Multer.File,
+        // @UploadedFileKind({ kind: 'audio', maxMb: 5, hasCreateFile: false })
+        // file: Express.Multer.File,
         @Body() body: AudioToTextDto,
     ) {
-        console.log({ file, body });
-
+        // console.log({ file, body });
+        console.log({ body });
+        // console.log(file)
+        // this._gptService.postAudioToText(body);
         return 'done';
     }
 }
