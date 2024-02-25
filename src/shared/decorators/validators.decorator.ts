@@ -8,8 +8,8 @@ export const IsFileKind = (props: {
 }): PropertyDecorator => {
     const { kind, maxMb = 5, hasCreateFile = false } = props;
 
+    // TODO: Implement the decorator
     return (target: Object, propertyName: string) => {
-        // descriptor.enumerable = value;
         registerDecorator({
             propertyName,
             name: 'IsFileKind',
@@ -18,12 +18,14 @@ export const IsFileKind = (props: {
             options: {
                 message: `File is bigger than ${maxMb}MB`,
             },
+            async: true,
             validator: {
                 validate(value: any, args: any) {
                     // console.log({ target, propertyName });
                     console.log({ value, args });
                     return true;
                 },
+
             },
         });
     };

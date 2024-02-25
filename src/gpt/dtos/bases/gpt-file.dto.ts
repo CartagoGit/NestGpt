@@ -7,16 +7,12 @@ export class GptFileDto {
     @IsOptional()
     readonly prompt?: string;
 
-    // @UploadedFileKind({ kind: 'audio', maxMb: 10 })
-    // private _file: Express.Multer.File;
-    // @IsNotEmpty()
+    @IsOptional()
     @IsFileKind({ kind: 'audio', maxMb: 5 })
     public file: Express.Multer.File;
-    // get file(): Express.Multer.File {
-    //     return this._file;
-    // }
 
-    // public setFile(file: Express.Multer.File): void {
-    //     this._file = file;
-    // }
+    // TODO
+    @IsOptional()
+    @IsFileKind({ kind: 'audio', maxMb: 5 })
+    public files: Express.Multer.File[];
 }

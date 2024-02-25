@@ -85,11 +85,11 @@ export const FileToBodyInterceptor = (
                 const errorMessage = `Files were not uploaded with the field name ${paramName}`;
                 if (err) {
                     return observer.error(
-                        new BadRequestException(errorMessage),
+                        new BadRequestException(err.message, err.code),
                     );
                 }
-                const file = request[paramName];
-                if (!file) {
+                const files = isMultiple ? request.files : request.file;
+                if (!files) {
                     return observer.error(
                         new BadRequestException(errorMessage),
                     );
@@ -98,7 +98,7 @@ export const FileToBodyInterceptor = (
                 if (cleanParam) delete request[paramName];
                 const body = {
                     ...request.body,
-                    [newParamName || paramName]: file,
+                    [newParamName || paramName]: files,
                 };
                 context.switchToHttp().getRequest().body = body;
                 next.handle().subscribe({
