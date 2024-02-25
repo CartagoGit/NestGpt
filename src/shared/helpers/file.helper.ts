@@ -4,6 +4,7 @@ import shortUuid from 'short-uuid';
 import type { Response } from 'node-fetch';
 import {
     IGptAudioFormat,
+    IGptFileFormat,
     IKindFormatFile,
 } from '../interfaces/index.interfaces';
 import {
@@ -22,7 +23,7 @@ export const createFileName = (props: {
 };
 
 export const createFileData = (props: {
-    format: IGptAudioFormat;
+    format: IGptFileFormat;
     isUpload?: boolean;
     initFileName?: string;
 }) => {

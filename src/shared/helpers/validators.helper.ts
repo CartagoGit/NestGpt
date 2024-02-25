@@ -6,9 +6,12 @@ import {
     MaxFileSizeValidator,
     createParamDecorator,
 } from '@nestjs/common';
-import { IKindFormatFile } from '../interfaces/api.interface';
+import type {
+    IGptFileFormat,
+    IKindFormatFile,
+} from '../interfaces/api.interface';
 import { kindFormat } from '../services/contants.service';
-import { arrayConjunction } from './index.helpers';
+import { arrayConjunction, createFileData, createFile } from './index.helpers';
 
 export class FileExtensionValidator extends FileValidator {
     public readonly validationOptions: { kind: IKindFormatFile };
@@ -34,31 +37,45 @@ export class FileExtensionValidator extends FileValidator {
 export const UploadedFileKind = (props: {
     kind: IKindFormatFile;
     maxMb?: number;
-    createFile?: boolean;
+    hasCreateFile?: boolean;
 }): ParameterDecorator => {
-    const { kind, maxMb = 5, createFile = false } = props;
-    return createParamDecorator((data: unknown, req: ExecutionContext) => {
-        const file = req.switchToHttp().getRequest().file;
-        const validations = [
-            new FileTypeValidator({ fileType: `${kind}/*` }),
-            new FileExtensionValidator({ kind }),
-            new MaxFileSizeValidator({
-                maxSize: 1000 * 1024 * maxMb,
-                message: `File is bigger than ${maxMb}MB`,
-            }),
-        ];
-        for (const validator of validations) {
-            if (!validator.isValid(file)) {
-                const formats = [...kindFormat[kind]];
-                throw new BadRequestException(
-                    validator.buildErrorMessage(file),
-                    {
-                        cause: 'File validation error',
-                        description: `File must be a valid ${kind} file with ${arrayConjunction(formats)} extension and a maximum size of ${maxMb}MB.`,
-                    },
-                );
+    const { kind, maxMb = 5, hasCreateFile = false } = props;
+    return createParamDecorator(
+        async (_data: unknown, req: ExecutionContext) => {
+            const file: Express.Multer.File = req
+                .switchToHttp()
+                .getRequest().file;
+            const validations = [
+                new FileTypeValidator({ fileType: `${kind}/*` }),
+                new FileExtensionValidator({ kind }),
+                new MaxFileSizeValidator({
+                    maxSize: 1000 * 1024 * maxMb,
+                    message: `File is bigger than ${maxMb}MB`,
+                }),
+            ];
+            for (const validator of validations) {
+                if (!validator.isValid(file)) {
+                    const formats = [...kindFormat[kind]];
+                    throw new BadRequestException(
+                        validator.buildErrorMessage(file),
+                        {
+                            cause: 'File validation error',
+                            description: `File must be a valid ${kind} file with ${arrayConjunction(formats)} extension and a maximum size of ${maxMb}MB.`,
+                        },
+                    );
+                }
             }
-        }
-        return file;
-    })();
+            if (hasCreateFile) {
+                const [initFileName, extension] = file.originalname.split('.');
+                const { folderPath, filePath } = createFileData({
+                    format: extension as IGptFileFormat,
+                    isUpload: true,
+                    initFileName,
+                });
+                await createFile({ buffer: file.buffer, folderPath, filePath });
+            }
+
+            return file;
+        },
+    )();
 };

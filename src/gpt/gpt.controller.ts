@@ -2,17 +2,13 @@ import * as fs from 'node:fs';
 import {
     Body,
     Controller,
-    FileTypeValidator,
     Get,
     HttpStatus,
-    MaxFileSizeValidator,
     NotFoundException,
     Param,
-    ParseFilePipe,
     Post,
     Req,
     Res,
-    UploadedFile,
     UseInterceptors,
 } from '@nestjs/common';
 import { GptService } from './gpt.service';
@@ -24,16 +20,10 @@ import {
     TextToVoiceDto,
     TranslateDto,
 } from './dtos/index.dtos';
+// Needed to use declarative types
 import { Multer } from 'multer';
-import {
-    FileExtensionValidator,
-    createFileData,
-    createFile,
-    UploadedFileKind,
-} from 'src/shared/helpers/index.helpers';
+import { UploadedFileKind } from 'src/shared/helpers/index.helpers';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { IGptAudioFormat } from 'src/shared/interfaces/index.interfaces';
-import { Audio } from 'openai/resources';
 
 @Controller('gpt')
 export class GptController {
@@ -135,56 +125,16 @@ export class GptController {
         res.end();
     }
 
-    // * Just for testing - Not ereased, to let code for other alternatives
-    // @UseInterceptors(
-    //     // TO upload!
-    //     FileInterceptor('file', {
-    //         storage: diskStorage({
-    //             destination: getPathKindFile('audio', { isUpload: true }),
-    //             filename: (_req, file, cb) => {
-    //                 const [originalFileName, extension] =
-    //                     file.originalname.split('.');
-    //                 const fileName = createFileName({
-    //                     extension,
-    //                     initFileName: originalFileName,
-    //                 });
-    //                 return cb(null, fileName);
-    //             },
-    //         }),
-    //         fileFilter: (_req, file, cb) => {
-    //             if (file.size > 1000 * 1024 * 5) {
-    //                 return cb(
-    //                     new BadRequestException('El archivo es mayor a 5MB'),
-    //                     false,
-    //                 );
-    //             }
-    //             if (!file.mimetype.startsWith('audio/')) {
-    //                 return cb(
-    //                     new UnsupportedMediaTypeException(
-    //                         'El archivo no es de tipo audio',
-    //                     ),
-    //                     false,
-    //                 );
-    //             }
-    //             return cb(null, true);
-    //         },
-    //     }),
-    // )
     @Post('audio-to-text')
     @UseInterceptors(FileInterceptor('file'))
     async postAudioToText(
-        @UploadedFileKind({ kind: 'audio', maxMb: 5, createFile: false })
+        // File validator
+        @UploadedFileKind({ kind: 'audio', maxMb: 5, hasCreateFile: true })
         file: Express.Multer.File,
         @Body() body: AudioToTextDto,
     ) {
-        // console.log({ file, body });
-        // const [initFileName, extension] = file.originalname.split('.');
-        // const { folderPath, filePath } = createFileData({
-        //     format: extension as IGptAudioFormat,
-        //     isUpload: true,
-        //     initFileName,
-        // });
-        // await createFile({ buffer: file.buffer, folderPath, filePath });
+        console.log({ file, body });
+
         return 'done';
     }
 }

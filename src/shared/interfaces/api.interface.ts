@@ -25,6 +25,8 @@ export type IGptAudioModel = (typeof gptAudioModel)[number];
 
 export type IGptAudioFormat = (typeof gptAudioFormats)[number];
 
+export type IGptFileFormat = IGptAudioFormat;
+
 // Other types
 
 export type IKindFormatFile = typeof kindFormatFile[number];
