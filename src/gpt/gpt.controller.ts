@@ -24,6 +24,8 @@ import {
 import { Multer } from 'multer';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { UploadedFileKind } from 'src/shared/decorators/index.decorators';
+import { FileToBodyInterceptor } from 'src/shared/interceptors/index.interceptors';
+
 
 @Controller('gpt')
 export class GptController {
@@ -126,7 +128,8 @@ export class GptController {
     }
 
     @Post('audio-to-text')
-    @UseInterceptors(FileInterceptor('file'))
+    // @UseInterceptors(FileInterceptor('file'))
+    @UseInterceptors(FileToBodyInterceptor('file'))
     async postAudioToText(
         // File validator
         // @UploadedFileKind({ kind: 'audio', maxMb: 5, hasCreateFile: false })
