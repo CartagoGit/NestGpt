@@ -172,11 +172,12 @@ export class GptController {
     // )
     @Post('audio-to-text')
     @UseInterceptors(FileInterceptor('file'))
-    async postAutoToText(
-        @UploadedFileKind({ kind: 'audio', maxMb: 5 , createFile: true })
+    async postAudioToText(
+        @UploadedFileKind({ kind: 'audio', maxMb: 5, createFile: false })
         file: Express.Multer.File,
-        body: AudioToTextDto,
+        @Body() body: AudioToTextDto,
     ) {
+        // console.log({ file, body });
         // const [initFileName, extension] = file.originalname.split('.');
         // const { folderPath, filePath } = createFileData({
         //     format: extension as IGptAudioFormat,

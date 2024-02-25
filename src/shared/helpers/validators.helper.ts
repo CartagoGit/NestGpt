@@ -1,12 +1,14 @@
-import { IKindFormatFile } from '../interfaces/api.interface';
-import { kindFormat } from '../services/contants.service';
 import {
+    BadRequestException,
+    ExecutionContext,
     FileTypeValidator,
     FileValidator,
     MaxFileSizeValidator,
-    ParseFilePipe,
-    UploadedFile,
+    createParamDecorator,
 } from '@nestjs/common';
+import { IKindFormatFile } from '../interfaces/api.interface';
+import { kindFormat } from '../services/contants.service';
+import { arrayConjunction } from './index.helpers';
 
 export class FileExtensionValidator extends FileValidator {
     public readonly validationOptions: { kind: IKindFormatFile };
@@ -24,37 +26,39 @@ export class FileExtensionValidator extends FileValidator {
         return this.formats.includes(extension);
     };
     public buildErrorMessage = (_file: Express.Multer.File): string => {
-        const conjunction = new Intl.ListFormat('en-US', {
-            style: 'long',
-            type: 'conjunction',
-        });
-        return `Invalid file extension. Only ${conjunction.format(this.formats)} are allowed.`;
+        return `Invalid file extension. Only ${arrayConjunction(this.formats)} are allowed.`;
     };
 }
 
-//* Expand the UploadedFile decorator to include the kind of file and validators automatically
+//* Decorator to validate the file kind, extension and size and let create a file if it doesn't exist and upload it
 export const UploadedFileKind = (props: {
     kind: IKindFormatFile;
     maxMb?: number;
     createFile?: boolean;
 }): ParameterDecorator => {
-    console.log('entro');
     const { kind, maxMb = 5, createFile = false } = props;
-    const result = UploadedFile(
-        new ParseFilePipe({
-            validators: [
-                new FileTypeValidator({ fileType: `${kind}/*` }),
-                new FileExtensionValidator({ kind }),
-                new MaxFileSizeValidator({
-                    maxSize: 1000 * 1024 * maxMb,
-                    message: `File is bigger than ${maxMb}MB`,
-                }),
-            ],
-        }),
-    );
-    if (createFile) {
-        console.log('createFile');
-    }
-    console.log('result', result);
-    return result;
+    return createParamDecorator((data: unknown, req: ExecutionContext) => {
+        const file = req.switchToHttp().getRequest().file;
+        const validations = [
+            new FileTypeValidator({ fileType: `${kind}/*` }),
+            new FileExtensionValidator({ kind }),
+            new MaxFileSizeValidator({
+                maxSize: 1000 * 1024 * maxMb,
+                message: `File is bigger than ${maxMb}MB`,
+            }),
+        ];
+        for (const validator of validations) {
+            if (!validator.isValid(file)) {
+                const formats = [...kindFormat[kind]];
+                throw new BadRequestException(
+                    validator.buildErrorMessage(file),
+                    {
+                        cause: 'File validation error',
+                        description: `File must be a valid ${kind} file with ${arrayConjunction(formats)} extension and a maximum size of ${maxMb}MB.`,
+                    },
+                );
+            }
+        }
+        return file;
+    })();
 };
