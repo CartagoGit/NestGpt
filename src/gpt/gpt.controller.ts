@@ -18,6 +18,7 @@ import {
 import { GptService } from './gpt.service';
 import type { Response, Request } from 'express';
 import {
+    AudioToTextDto,
     OrthographyDto,
     ProConDicusserDto,
     TextToVoiceDto,
@@ -28,9 +29,11 @@ import {
     FileExtensionValidator,
     createFileData,
     createFile,
+    UploadedFileKind,
 } from 'src/shared/helpers/index.helpers';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { IGptAudioFormat } from 'src/shared/interfaces/index.interfaces';
+import { Audio } from 'openai/resources';
 
 @Controller('gpt')
 export class GptController {
@@ -170,22 +173,9 @@ export class GptController {
     @Post('audio-to-text')
     @UseInterceptors(FileInterceptor('file'))
     async postAutoToText(
-        @UploadedFile(
-            // To validate!
-            new ParseFilePipe({
-                validators: [
-                    new FileTypeValidator({
-                        fileType: 'audio/*',
-                    }),
-                    new FileExtensionValidator({ kind: 'audio' }),
-                    new MaxFileSizeValidator({
-                        maxSize: 1000 * 1024 * 5,
-                        message: 'File is bigger than 5MB',
-                    }),
-                ],
-            }),
-        )
+        @UploadedFileKind({ kind: 'audio', maxMb: 5 , createFile: true })
         file: Express.Multer.File,
+        body: AudioToTextDto,
     ) {
         const [initFileName, extension] = file.originalname.split('.');
         const { folderPath, filePath } = createFileData({

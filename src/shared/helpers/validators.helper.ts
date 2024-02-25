@@ -1,6 +1,12 @@
 import { IKindFormatFile } from '../interfaces/api.interface';
 import { kindFormat } from '../services/contants.service';
-import { FileValidator } from '@nestjs/common';
+import {
+    FileTypeValidator,
+    FileValidator,
+    MaxFileSizeValidator,
+    ParseFilePipe,
+    UploadedFile,
+} from '@nestjs/common';
 
 export class FileExtensionValidator extends FileValidator {
     public readonly validationOptions: { kind: IKindFormatFile };
@@ -25,3 +31,24 @@ export class FileExtensionValidator extends FileValidator {
         return `Invalid file extension. Only ${conjunction.format(this.formats)} are allowed.`;
     };
 }
+
+// export const UploadedFileKind = (props: {
+//     kind: IKindFormatFile;
+//     maxMb?: number;
+//     createFile?: boolean;
+// }) => {
+//     const { kind, maxMb = 5, createFile = false } = props;
+//     return UploadedFile(
+//         new ParseFilePipe({
+//             validators: [
+//                 new FileTypeValidator({ fileType: `${kind}/*` }),
+//                 new FileExtensionValidator({ kind }),
+//                 new MaxFileSizeValidator({
+//                     maxSize: 1000 * 1024 * maxMb,
+//                     message: `File is bigger than ${maxMb}MB`,
+//                 }),
+//             ],
+
+//         }),
+//     );
+// };
