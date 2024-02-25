@@ -1,7 +1,3 @@
-import { IsString } from 'class-validator';
+import { GptFileDto } from './bases/gpt-file.dto';
 
-export class AudioToTextDto {
-    @IsString()
-    readonly prompt?: string;
-
-}
+export class AudioToTextDto extends GptFileDto {}

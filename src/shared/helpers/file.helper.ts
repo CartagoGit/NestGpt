@@ -18,7 +18,7 @@ export const createFileName = (props: {
     initFileName?: string;
 }) => {
     const { extension, initFileName = undefined } = props;
-    const fileName = `${initFileName ? initFileName.slice(0, 6) + '_' : ''}${new Date().getTime().toString().padStart(14, '0')}_${shortUuid().new().slice(0, 5)}.${extension}`;
+    const fileName = `${initFileName ? initFileName.slice(0, 10) + '_' : ''}${new Date().getTime().toString().padStart(14, '0')}_${shortUuid().new().slice(0, 5)}.${extension}`;
     return fileName;
 };
 
