@@ -32,23 +32,29 @@ export class FileExtensionValidator extends FileValidator {
     };
 }
 
-// export const UploadedFileKind = (props: {
-//     kind: IKindFormatFile;
-//     maxMb?: number;
-//     createFile?: boolean;
-// }) => {
-//     const { kind, maxMb = 5, createFile = false } = props;
-//     return UploadedFile(
-//         new ParseFilePipe({
-//             validators: [
-//                 new FileTypeValidator({ fileType: `${kind}/*` }),
-//                 new FileExtensionValidator({ kind }),
-//                 new MaxFileSizeValidator({
-//                     maxSize: 1000 * 1024 * maxMb,
-//                     message: `File is bigger than ${maxMb}MB`,
-//                 }),
-//             ],
-
-//         }),
-//     );
-// };
+//* Expand the UploadedFile decorator to include the kind of file and validators automatically
+export const UploadedFileKind = (props: {
+    kind: IKindFormatFile;
+    maxMb?: number;
+    createFile?: boolean;
+}): ParameterDecorator => {
+    console.log('entro');
+    const { kind, maxMb = 5, createFile = false } = props;
+    const result = UploadedFile(
+        new ParseFilePipe({
+            validators: [
+                new FileTypeValidator({ fileType: `${kind}/*` }),
+                new FileExtensionValidator({ kind }),
+                new MaxFileSizeValidator({
+                    maxSize: 1000 * 1024 * maxMb,
+                    message: `File is bigger than ${maxMb}MB`,
+                }),
+            ],
+        }),
+    );
+    if (createFile) {
+        console.log('createFile');
+    }
+    console.log('result', result);
+    return result;
+};

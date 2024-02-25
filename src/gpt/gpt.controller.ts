@@ -177,13 +177,13 @@ export class GptController {
         file: Express.Multer.File,
         body: AudioToTextDto,
     ) {
-        const [initFileName, extension] = file.originalname.split('.');
-        const { folderPath, filePath } = createFileData({
-            format: extension as IGptAudioFormat,
-            isUpload: true,
-            initFileName,
-        });
-        await createFile({ buffer: file.buffer, folderPath, filePath });
+        // const [initFileName, extension] = file.originalname.split('.');
+        // const { folderPath, filePath } = createFileData({
+        //     format: extension as IGptAudioFormat,
+        //     isUpload: true,
+        //     initFileName,
+        // });
+        // await createFile({ buffer: file.buffer, folderPath, filePath });
         return 'done';
     }
 }
