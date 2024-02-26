@@ -126,7 +126,7 @@ export class GptController {
     @Post('audio-to-text')
     @UseInterceptors(FileToBodyInterceptor('file'))
     async postAudioToText(@Body() body: AudioToTextDto) {
-        // console.log({ body });
+        console.log({ body });
         // this._gptService.postAudioToText(body);
         return 'done';
     }
