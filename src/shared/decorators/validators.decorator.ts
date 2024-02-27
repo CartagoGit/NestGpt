@@ -21,7 +21,7 @@ export const IsFileKind = (props: {
             async: true,
             validator: {
                 validate(value: any, args: any) {
-                    // console.log({ target, propertyName });
+                    console.log({ target, propertyName });
                     console.log({ value, args });
                     return true;
                 },
